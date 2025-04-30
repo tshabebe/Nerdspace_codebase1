@@ -15,7 +15,7 @@ import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { PostHogProvider } from "@/lib/posthog-provider";
-import NerdspaceOut from "@/components/soon/nerdspace-out";
+import { TRPCProvider } from "@/lib/trpc/client";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -96,40 +96,42 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${InstrumentSerif.variable} ${inter.variable} ${itcThin.variable} ${itcBold.variable} ${itcThinItalic.variable} overflow-x-hidden font-geist antialiased dark:bg-black`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TanstackQueryProvider>
-            <WhoAmIProvider>
-              <PostHogProvider>
-                <MobileViewMessage />
-                {/* <NerdspaceOut /> */}
-                {children}
-                <FeedbackButton />
-              </PostHogProvider>
-            </WhoAmIProvider>
-          </TanstackQueryProvider>
-          <Toaster
-            position="bottom-right"
-            reverseOrder={false}
-            toastOptions={{
-              className: "",
-              style: {
-                border: "1px solid #201e1d",
-                padding: "8px",
-                color: "#ffffff",
-                backgroundColor: "#201e1d",
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 0,
-              },
-            }}
-          />
-        </ThemeProvider>
+        <TRPCProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TanstackQueryProvider>
+              <WhoAmIProvider>
+                <PostHogProvider>
+                  <MobileViewMessage />
+                  {/* <NerdspaceOut /> */}
+                  {children}
+                  <FeedbackButton />
+                </PostHogProvider>
+              </WhoAmIProvider>
+            </TanstackQueryProvider>
+            <Toaster
+              position="bottom-right"
+              reverseOrder={false}
+              toastOptions={{
+                className: "",
+                style: {
+                  border: "1px solid #201e1d",
+                  padding: "8px",
+                  color: "#ffffff",
+                  backgroundColor: "#201e1d",
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                  borderBottomLeftRadius: 10,
+                  borderBottomRightRadius: 0,
+                },
+              }}
+            />
+          </ThemeProvider>
+        </TRPCProvider>
       </body>
     </html>
   );
